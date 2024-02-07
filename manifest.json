@@ -17,7 +17,6 @@
     ]
   },
   "builders": {
-    "node": "6.x",
     "pixel": "0.x",
     "docs": "0.x"
   },
@@ -39,25 +38,21 @@
         "description": "Time in seconds ex: 10s (default is 15s)",
         "type": "string"
       },
-
       "block3rdParty": {
         "title": "Block all 3rd party",
         "description": "Block all 3rd party",
         "type": "boolean"
       },
-
       "customTimeToPush": {
         "title": "[CUSTOM] - List of 3rd party to push",
         "description": "Pattern: domain,seconds;domain,seconds;",
         "type": "string"
       },
-
       "preconnect": {
         "title": "[PRECONNECT] - List of domains to preconnect",
         "description": "Pattern: domain;domain;domain...",
         "type": "string"
       },
-
       "blacklist": {
         "title": "[BLACKLIST] - List of domains to block",
         "description": "Pattern: domain;domain;domain...",
