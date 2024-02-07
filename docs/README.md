@@ -1,6 +1,6 @@
 📢 Use this project, [contribute](https://github.com/vtex-apps/speedy) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
 
-# Google Tag Manager
+# Speedy
 
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
