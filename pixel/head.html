@@ -1,5 +1,5 @@
 <script>
-  (function() {
+  (function () {
     function clearString(str) {
       return str.replace("https://", "");
     }
@@ -25,7 +25,7 @@
 
   })();
 
-  (function() {
+  (function () {
 
     const DEFAULT_TIME_TO_PUSH = 15
     const timeFromSettings = "{{settings.timeToPush3rdParty}}"
@@ -34,16 +34,16 @@
     const customTimeToPushFromSettings = '{{settings.customTimeToPush}}'
     const blacklistFromSettings = '{{settings.blacklist}}'
 
-    const blacklist = blacklistFromSettings.length ? blacklistFromSettings.split(";") : []
+    const blacklist = blacklistFromSettings.length ? decodeURIComponent(blacklistFromSettings).split(";") : []
 
     let customTimeToPush = []
 
     if (customTimeToPushFromSettings.length > 0) {
-      customTimeToPush = customTimeToPushFromSettings.split(";").map((row) => {
+      customTimeToPush = decodeURIComponent(customTimeToPushFromSettings).split(";").map((row) => {
         const items = row.split(",")
         return {
           domain: items[0],
-          seconds: items[1]
+          seconds: items[1] ? items[1] * 1000 : null
         }
       })
     }
@@ -79,16 +79,16 @@
       }
     }
 
-    function insertChildrenHandler (child, fct, scope, referenceNode) {
+    function insertChildrenHandler(child, fct, scope, referenceNode) {
       if (child.tagName === "SCRIPT") {
         child.setAttribute("defer", "");
         child.removeAttribute("async");
 
         if (child.src && !checkWhiteList(child.src)) {
 
-          const execTimeToPush = customTimeToPush.length > 0 ? customTimeToPush.find((value) => {
+          const execTimeToPush = customTimeToPush.length > 0 ? (customTimeToPush.find((value) => {
             return child.src.includes(value.domain)
-          }) : timeToPush
+          }))?.seconds ?? timeToPush : timeToPush
 
           const isBlackListed = blacklist.find((item) => child.src.includes(item))
 
@@ -105,11 +105,11 @@
     const originalAppendChild = Element.prototype.appendChild;
     const originalInsertBefore = Element.prototype.insertBefore;
 
-    Element.prototype.appendChild = function(child) {
+    Element.prototype.appendChild = function (child) {
       return insertChildrenHandler(child, originalAppendChild, this)
     };
 
-    Element.prototype.insertBefore = function(child, referenceNode) {
+    Element.prototype.insertBefore = function (child, referenceNode) {
       return insertChildrenHandler(child, originalInsertBefore, this, referenceNode)
     };
   })();
