@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "vtex.pixel-interfaces": "1.x",
-    "vtex.pixel-server": ">=0.42.0",
+    "vtex.pixel-server": "0.x",
     "vtex.pixel-server-ui": "0.x"
   },
   "policies": [
