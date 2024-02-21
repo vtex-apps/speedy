@@ -27,7 +27,7 @@
 
   (function () {
 
-    const DEFAULT_TIME_TO_PUSH = 15
+    const DEFAULT_TIME_TO_PUSH = 10
     const timeFromSettings = "{{settings.timeToPush3rdParty}}"
     const timeToPush = timeFromSettings.length > 0 ? parseInt(timeFromSettings) * 1000 : DEFAULT_TIME_TO_PUSH * 1000;
     const block3rdParty = !!"{{settings.block3rdParty}}".length
@@ -81,8 +81,11 @@
 
     function insertChildrenHandler(child, fct, scope, referenceNode) {
       if (child.tagName === "SCRIPT") {
-        child.setAttribute("defer", "");
-        child.removeAttribute("async");
+
+        if (child.src) {
+          child.setAttribute("defer", "");
+          child.removeAttribute("async");
+        }
 
         if (child.src && !checkWhiteList(child.src)) {
 
@@ -112,5 +115,15 @@
     Element.prototype.insertBefore = function (child, referenceNode) {
       return insertChildrenHandler(child, originalInsertBefore, this, referenceNode)
     };
+    //
+    // const observer = new PerformanceObserver((list) => {
+    //   const entries = list.getEntries('largest-contentful-paint');
+    //   const entry = entries[0];
+    //   console.log("LCP element:", entry.element);
+    //   console.log("LCP render time:", entry.renderTime);
+    // });
+    //
+    // observer.observe({ type: 'largest-contentful-paint', buffered: true });
+
   })();
 </script>

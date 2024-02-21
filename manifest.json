@@ -1,7 +1,7 @@
 {
   "name": "speedy",
   "vendor": "vtex",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "title": "Speedy",
   "description": "Improve your site with this app",
   "scripts": {
@@ -21,7 +21,9 @@
     "docs": "0.x"
   },
   "dependencies": {
-    "vtex.pixel-interfaces": "1.x"
+    "vtex.pixel-interfaces": "1.x",
+    "vtex.pixel-server": ">=0.42.0",
+    "vtex.pixel-server-ui": "0.x"
   },
   "policies": [
     {
@@ -35,7 +37,7 @@
     "properties": {
       "timeToPush3rdParty": {
         "title": "Time in seconds to push the 3rd party",
-        "description": "Time in seconds ex: 10s (default is 15s)",
+        "description": "Time in seconds ex: 5s (default is 10s)",
         "type": "string"
       },
       "block3rdParty": {
