@@ -61,7 +61,19 @@
       timeFromSettings,
       block3rdParty,
       customTimeToPush,
-      blacklist
+      blacklist,
+      lcpLoaded: false,
+      init: () => {
+        const observer = new PerformanceObserver((list) => {
+          const entries = list.getEntries('largest-contentful-paint');
+          const entry = entries[0];
+          if (entries) {
+            SPEEDY.lcpLoaded = true
+          }
+        });
+
+        observer.observe({ type: 'largest-contentful-paint', buffered: true });
+      }
     }
 
     function checkWhiteList(url) {
@@ -82,13 +94,12 @@
     function insertChildrenHandler(child, fct, scope, referenceNode) {
       if (child.tagName === "SCRIPT") {
 
-        if (child.src) {
+        if (child.src && child.src.length > 0) {
           child.setAttribute("defer", "");
           child.removeAttribute("async");
         }
 
         if (child.src && !checkWhiteList(child.src)) {
-
           const execTimeToPush = customTimeToPush.length > 0 ? (customTimeToPush.find((value) => {
             return child.src.includes(value.domain)
           }))?.seconds ?? timeToPush : timeToPush
@@ -97,7 +108,17 @@
 
           return setTimeout(() => {
             if (!block3rdParty && !isBlackListed) {
-              return fct.call(scope, child, referenceNode);
+              if (SPEEDY.lcpLoaded) {
+                return fct.call(scope, child, referenceNode);
+              } else {
+                const intervalID = setInterval(() => {
+                  if (SPEEDY.lcpLoaded) {
+                    clearInterval(intervalID)
+                    fct.call(scope, child, referenceNode);
+                  }
+                }, 50)
+              }
+
             }
           }, execTimeToPush);
         }
@@ -115,15 +136,6 @@
     Element.prototype.insertBefore = function (child, referenceNode) {
       return insertChildrenHandler(child, originalInsertBefore, this, referenceNode)
     };
-    //
-    // const observer = new PerformanceObserver((list) => {
-    //   const entries = list.getEntries('largest-contentful-paint');
-    //   const entry = entries[0];
-    //   console.log("LCP element:", entry.element);
-    //   console.log("LCP render time:", entry.renderTime);
-    // });
-    //
-    // observer.observe({ type: 'largest-contentful-paint', buffered: true });
 
   })();
 </script>
