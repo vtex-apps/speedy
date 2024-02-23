@@ -1,7 +1,7 @@
 {
   "name": "speedy",
   "vendor": "vtex",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "title": "Speedy",
   "description": "Improve your site with this app",
   "scripts": {
@@ -12,7 +12,9 @@
     "support": {
       "url": "https://support.vtex.com/hc/requests"
     },
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "builders": {
     "pixel": "0.x",
