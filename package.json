@@ -3,7 +3,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "lint": "eslint --ext js,jsx,ts,tsx .",
+    "lint": "eslint --ignore-pattern pixel --ext js,jsx,ts,tsx .",
     "build": "webpack",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\""
   },
@@ -14,7 +14,7 @@
   },
   "lint-staged": {
     "*.{ts,js,tsx,jsx}": [
-      "eslint --fix",
+      "eslint --fix --ignore-pattern pixel",
       "prettier --write"
     ],
     "*.{json,graphql,gql}": [
