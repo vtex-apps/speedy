@@ -1,4 +1,15 @@
 <script>
+  function isSafari() {
+    const isWebkit = navigator.userAgent.includes('WebKit');
+    const isSafari = (
+      navigator.userAgent.includes('Safari') &&
+      !navigator.userAgent.includes('Chrome') &&
+      !navigator.userAgent.includes('CriOS') &&
+      !navigator.userAgent.includes('FxiOS')
+    );
+    return isWebkit && isSafari;
+  }
+
   (function () {
     function clearString(str) {
       return str.replace("https://", "");
@@ -64,9 +75,12 @@
       blacklist,
       lcpLoaded: false,
       init: () => {
+        if (isSafari()) {
+          SPEEDY.lcpLoaded = true
+          return;
+        }
         const observer = new PerformanceObserver((list) => {
           const entries = list.getEntries('largest-contentful-paint');
-          const entry = entries[0];
           if (entries) {
             SPEEDY.lcpLoaded = true
           }
