@@ -12,5 +12,5 @@
   "rules": {
     "no-undef": "off"
   },
-  "ignorePatterns": ["pixel/*"]
+  "ignorePatterns": ["./pixel/*"]
 }

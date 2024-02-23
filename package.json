@@ -13,11 +13,11 @@
     }
   },
   "lint-staged": {
-    "*.{ts,js,tsx,jsx}": [
-      "eslint --fix --ignore-pattern pixel",
+    "src*.{ts,js,tsx,jsx}": [
+      "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,graphql,gql}": [
+    "src*.{json,graphql,gql}": [
       "prettier --write"
     ]
   },
