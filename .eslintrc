@@ -1,9 +1,15 @@
 {
   "extends": "vtex",
   "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "env": {
     "node": true,
     "es6": true,
     "jest": true
+  },
+  "rules": {
+    "no-undef": "off"
   }
 }
