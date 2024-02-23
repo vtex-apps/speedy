@@ -11,5 +11,6 @@
   },
   "rules": {
     "no-undef": "off"
-  }
+  },
+  "ignorePatterns": ["pixel/*"]
 }
