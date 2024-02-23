@@ -34,7 +34,7 @@
         e.src &&
           !(function(e) {
             const t = e.match(
-              /^(?:https?:\/\/)?(?:www\.)?([^\/:?#]+)(?:[\/:?#]|$)/i
+              /^(?:https?:\/\/)?(?:www\.)?([^/:?#]+)(?:[/:?#]|$)/i
             )
             if (t && t[1]) {
               const e = s.map(
