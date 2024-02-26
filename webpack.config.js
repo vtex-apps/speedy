@@ -15,14 +15,13 @@ module.exports = {
             html5_comments: false,
           },
           compress: {
-            // defaults: false,
             unsafe: true,
             arrows: false,
             evaluate: false,
             expression: true,
             properties: false,
           },
-          mangle: true, // Note `mangle.properties` is `false` by default.
+          mangle: true,
           format: {
             braces: true,
             max_line_len: 100,
@@ -41,7 +40,6 @@ module.exports = {
     filename: 'speedy_bundle.js',
   },
   plugins: [
-    // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: false,
       filename: 'head-start.html',
