@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added the webpack configuration and script optimization
+
 ## [0.2.9] - 2024-02-23
 
 ### Fixed
