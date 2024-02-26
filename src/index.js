@@ -1,12 +1,13 @@
-function isSafari() {
-  const isWebkit = navigator.userAgent.includes('WebKit')
-  const hasSafari =
-    navigator.userAgent.includes('Safari') &&
-    !navigator.userAgent.includes('Chrome') &&
-    !navigator.userAgent.includes('CriOS') &&
-    !navigator.userAgent.includes('FxiOS')
-
-  return isWebkit && hasSafari
+const Settings = {
+  timeFromSettings: '{{settings.timeToPush3rdParty}}',
+  block3rdParty: '{{settings.block3rdParty}}',
+  customTimeToPush: '{{settings.customTimeToPush}}',
+  blacklist: '{{settings.blacklist}}',
+  preconnect: '{{settings.preconnect}}',
+  account: '{{account}}',
+  get: (property, _default) => {
+    return Settings[property] ? Settings[property] : _default
+  },
 }
 
 ;(function() {
@@ -14,45 +15,28 @@ function isSafari() {
     return str.replace('https://', '')
   }
 
-  const preconnectList = new Set(
-    decodeURIComponent('{{settings.preconnect}}').split(';')
-  )
-
-  preconnectList.add('https://{{account}}.vtexassets.com')
-
-  for (let domain of preconnectList) {
-    if (domain.length > 0) {
-      domain = clearString(domain)
-      const linkPreconnect = document.createElement('link')
-
-      linkPreconnect.rel = 'preconnect'
-      linkPreconnect.href = `https://${domain}`
-
-      const linkDNSFetch = document.createElement('link')
-
-      linkDNSFetch.rel = 'dns-prefetch'
-      linkDNSFetch.href = `https://${domain}`
-
-      document.head.appendChild(linkPreconnect)
-      document.head.appendChild(linkDNSFetch)
-    }
-  }
-})()
-;(function() {
   const DEFAULT_TIME_TO_PUSH = 10
-  const timeFromSettings = '{{settings.timeToPush3rdParty}}'
+  const timeFromSettings = Settings.get('timeToPush3rdParty', '')
+
   const timeToPush =
     timeFromSettings.length > 0
-      ? parseInt(timeFromSettings, 10) * 1000
+      ? +timeFromSettings * 1000
       : DEFAULT_TIME_TO_PUSH * 1000
 
-  const block3rdParty = !!'{{settings.block3rdParty}}'.length
-  const customTimeToPushFromSettings = '{{settings.customTimeToPush}}'
-  const blacklistFromSettings = '{{settings.blacklist}}'
+  const block3rdParty = !!Settings.get('settings', '').length
+  const customTimeToPushFromSettings = Settings.get('customTimeToPush', '')
 
-  const blacklist = blacklistFromSettings.length
-    ? decodeURIComponent(blacklistFromSettings).split(';')
-    : []
+  const blacklistFromSettings = Settings.get('blacklist', '')
+
+  const preConnectData = Settings.get('preconnect', '')
+
+  const preConnectList = new Set(decodeURIComponent(preConnectData).split(';'))
+
+  const blacklist = () => {
+    return blacklistFromSettings.length
+      ? decodeURIComponent(blacklistFromSettings).split(';')
+      : []
+  }
 
   let customTimeToPush = []
 
@@ -69,6 +53,26 @@ function isSafari() {
       })
   }
 
+  preConnectList.add(`https://${Settings.get('account', '')}.vtexassets.com`)
+
+  for (let domain of preConnectList) {
+    if (domain.length > 0) {
+      domain = clearString(domain)
+      const linkPreConnect = document.createElement('link')
+
+      linkPreConnect.rel = 'preconnect'
+      linkPreConnect.href = `https://${domain}`
+
+      const linkDNSFetch = document.createElement('link')
+
+      linkDNSFetch.rel = 'dns-prefetch'
+      linkDNSFetch.href = `https://${domain}`
+
+      document.head.appendChild(linkPreConnect)
+      document.head.appendChild(linkDNSFetch)
+    }
+  }
+
   const whiteList = ['*.vtexassets.com', 'vtex.com', '*.myvtex.com']
 
   window.SPEEDY = {
@@ -78,25 +82,10 @@ function isSafari() {
     timeFromSettings,
     block3rdParty,
     customTimeToPush,
-    blacklist,
+    blacklist: blacklist(),
+    preConnectData,
+    preConnectList,
     lcpLoaded: false,
-    init: () => {
-      if (isSafari()) {
-        SPEEDY.lcpLoaded = true
-
-        return
-      }
-
-      const observer = new PerformanceObserver(list => {
-        const entries = list.getEntries('largest-contentful-paint')
-
-        if (entries) {
-          SPEEDY.lcpLoaded = true
-        }
-      })
-
-      observer.observe({ type: 'largest-contentful-paint', buffered: true })
-    },
   }
 
   function checkWhiteList(url) {
@@ -134,7 +123,7 @@ function isSafari() {
               })?.seconds ?? timeToPush
             : timeToPush
 
-        const isBlackListed = blacklist.find(item => child.src.includes(item))
+        const isBlackListed = blacklist().find(item => child.src.includes(item))
 
         return setTimeout(() => {
           if (!block3rdParty && !isBlackListed) {
@@ -171,6 +160,21 @@ function isSafari() {
       referenceNode
     )
   }
+})()
+;(function() {
+  if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+    SPEEDY.lcpLoaded = true
 
-  window.SPEEDY.init()
+    return
+  }
+
+  const observer = new PerformanceObserver(list => {
+    const entries = list.getEntries('largest-contentful-paint')
+
+    if (entries) {
+      SPEEDY.lcpLoaded = true
+    }
+  })
+
+  observer.observe({ type: 'largest-contentful-paint', buffered: true })
 })()

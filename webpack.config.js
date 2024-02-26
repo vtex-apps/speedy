@@ -1,9 +1,40 @@
 const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   entry: path.resolve(__dirname, 'src/index.js'),
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            bare_returns: true,
+            html5_comments: false,
+          },
+          compress: {
+            // defaults: false,
+            unsafe: true,
+            arrows: false,
+            evaluate: false,
+            expression: true,
+            properties: false,
+          },
+          mangle: true, // Note `mangle.properties` is `false` by default.
+          format: {
+            braces: true,
+            max_line_len: 100,
+            quote_keys: true,
+            quote_style: 0,
+            semicolons: false,
+            keep_quoted_props: true,
+          },
+        },
+      }),
+    ],
+  },
   output: {
     publicPath: path.resolve(__dirname, 'pixel'),
     path: path.resolve(__dirname, 'pixel'),
