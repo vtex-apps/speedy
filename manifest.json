@@ -59,6 +59,16 @@
         "title": "[BLACKLIST] - List of domains to block",
         "description": "Pattern: domain;domain;domain...",
         "type": "string"
+      },
+      "enableGA": {
+        "title": "Enable Google Analytics",
+        "description": "Enable Google Analytics",
+        "type": "boolean"
+      },
+      "googleAnalyticsID": {
+        "title": "Google Analytics ID",
+        "description": "Google Analytics ID",
+        "type": "string"
       }
     }
   },

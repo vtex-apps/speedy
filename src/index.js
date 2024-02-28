@@ -5,12 +5,36 @@ const Settings = {
   blacklist: '{{settings.blacklist}}',
   preconnect: '{{settings.preconnect}}',
   account: '{{account}}',
+  enableGA: '{{settings.enableGA}}',
+  googleAnalyticsID: '{{settings.googleAnalyticsID}}',
   get: (property, _default) => {
     return Settings[property] ? Settings[property] : _default
   },
 }
 
-;(function() {
+const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
+
+function gtag() {
+  // eslint-disable-next-line prefer-rest-params
+  dataLayer.push(arguments)
+}
+
+;(function GoogleAnalytics() {
+  if (Settings.get('enableGA', 'false') === 'true') {
+    const script = document.createElement('script')
+
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`
+    script.setAttribute('defer', '')
+    document.head.appendChild(script)
+
+    window.dataLayer = window.dataLayer || []
+
+    gtag('js', new Date())
+
+    gtag('config', googleAnalyticsID)
+  }
+})()
+;(function MainSpeedyThread() {
   function clearString(str) {
     return str.replace('https://', '')
   }
@@ -86,6 +110,7 @@ const Settings = {
     preConnectData,
     preConnectList,
     lcpLoaded: false,
+    googleAnalyticsID,
   }
 
   function checkWhiteList(url) {
@@ -123,7 +148,13 @@ const Settings = {
               })?.seconds ?? timeToPush
             : timeToPush
 
-        const isBlackListed = blacklist().find(item => child.src.includes(item))
+        const isAnalytics =
+          Settings.get('enableGA', 'false') === 'true' &&
+          googleAnalyticsID.length &&
+          child.src.includes(googleAnalyticsID)
+
+        const isBlackListed =
+          blacklist().find(item => child.src.includes(item)) && isAnalytics
 
         return setTimeout(() => {
           if (!block3rdParty && !isBlackListed) {
@@ -161,7 +192,7 @@ const Settings = {
     )
   }
 })()
-;(function() {
+;(function CheckSafariLCP() {
   if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
     SPEEDY.lcpLoaded = true
 
