@@ -1,7 +1,7 @@
 {
   "name": "speedy",
   "vendor": "vtex",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "title": "Speedy",
   "description": "Improve your site with this app",
   "scripts": {
