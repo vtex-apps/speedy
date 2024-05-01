@@ -1,6 +1,6 @@
-📢 Use this project, [contribute](https://github.com/vtex-apps/speedy) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
+![plot](./assets/github-banner.png)
 
-# Speedy
+📢 Use🏃 this project, [contribute](https://github.com/vtex-apps/speedy) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
 
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -10,7 +10,25 @@
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 
-The VTEX Speedy app is a first party that speeds up your store
+## Description
+
+The VTEX Speedy app is a first party that speeds up your store:
+
+* Handling 3rd party scripts: postponing or running in web workers (Partytown integration)
+* Prefetching pages (useful for PLPs categories)
+
+
+Speedy uses LCP and FCP data to ensure the loading of 3rd scripts is not affecting the web page loading.
+
+## Core Web Vitals
+
+## Integrations
+
+### Partytown
+
+
+### Pixel Server & Pixel UI
+
 
 ## Installing Speedy
 

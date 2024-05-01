@@ -3,7 +3,7 @@
   "vendor": "vtex",
   "version": "0.3.2-beta.16",
   "title": "Speedy",
-  "description": "Improve your site with this app",
+  "description": "Speedy is a VTEX IO app that improves the performance of your store by optimizing the loading of third-party scripts, prefetching data. It will allow you to improve the TBT and INP metrics",
   "scripts": {
     "postreleasy": "vtex publish --verbose"
   },
@@ -48,12 +48,14 @@
       "customTimeToPush": {
         "title": "[CUSTOM] - List of 3rd party to push",
         "description": "Pattern: domain,seconds;domain,seconds;",
-        "type": "string"
+        "type": "string",
+        "default": "googletagmanager,0;"
       },
       "preconnect": {
         "title": "[PRECONNECT] - List of domains to preconnect",
         "description": "Pattern: domain;domain;domain...",
-        "type": "string"
+        "type": "string",
+        "default": "www.googletagmanager.com;fonts.googleapis.com;fonts.gstatic.com"
       },
       "blacklist": {
         "title": "[BLACKLIST] - List of domains to block",
@@ -69,6 +71,24 @@
         "title": "Google Analytics ID",
         "description": "Google Analytics ID",
         "type": "string"
+      },
+      "queueDelay": {
+        "title": "Queue Delay",
+        "description": "Delay in seconds to load each item of the queue",
+        "type": "string",
+        "default": "1.5"
+      },
+      "prefetchAnchors": {
+        "title": "Prefetch Anchors",
+        "description": "Block all 3rd party",
+        "type": "boolean",
+        "default": true
+      },
+      "prefetchRule": {
+        "title": "Prefetch Anchors Rule",
+        "description": "Put the classNames anchors that should be prefetched separated by comma (You can add manually 'speedy')",
+        "type": "string",
+        "default": "product-summary"
       }
     }
   },

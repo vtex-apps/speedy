@@ -1,23 +1,23 @@
-const partyTownDebug = !!(
-  localStorage?.getItem('partyTownDebug') ||
-  window.location.search.includes('partyTownDebug')
+const speedyDebug = !!(
+  localStorage?.getItem('speedyDebug') ||
+  window.location.search.includes('speedyDebug')
 )
 
 const isGTMDebugging = window?.location?.search.includes('gtm_debug')
 
 window.partytown = {
   forward: ['dataLayer.push', 'fbq', 'gtag'],
-  debug: partyTownDebug,
+  debug: speedyDebug,
   loadScriptsOnMainThread: [...(isGTMDebugging ? [/googletagmanager/g] : [])],
-  lib: !partyTownDebug
+  lib: !speedyDebug
     ? `/_v/public/assets/v1/published/vtex.speedy@${window.speedy_version}/public/~partytown/`
     : `/_v/private/assets/v1/linked//vtex.speedy@${window.speedy_version}/public/~partytown/`,
 }
 
-if (partyTownDebug) {
-  localStorage.setItem('partyTownDebug', 'true')
+if (speedyDebug) {
+  localStorage.setItem('speedyDebug', 'true')
 } else {
-  localStorage.removeItem('partyTownDebug')
+  localStorage.removeItem('speedyDebug')
 }
 
 const Settings = {
@@ -29,9 +29,21 @@ const Settings = {
   account: '{{account}}',
   enableGA: '{{settings.enableGA}}',
   googleAnalyticsID: '{{settings.googleAnalyticsID}}',
+  queueDelay: '{{settings.queueDelay}}',
+  prefetchAnchors: '{{settings.prefetchAnchors}}',
+  prefetchRule: '{{settings.prefetchRule}}',
   get: (property, _default) => {
     return Settings[property] ? Settings[property] : _default
   },
+  logDebug: msg => {
+    // eslint-disable-next-line no-console
+    console.debug.apply(console, [
+      '%cSpeedy 🏃‍♂️',
+      'background: #42b883; color: white; padding: 2px 3px; border-radius: 2px; font-size: 1em;',
+      msg,
+    ])
+  },
+  debug: speedyDebug,
 }
 
 const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
@@ -50,6 +62,8 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
   }
 
   const script = document.createElement('script')
+
+  Settings.logDebug('Google Analytics enabled')
 
   script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`
   script.setAttribute('defer', '')
@@ -78,7 +92,8 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
       ? +timeFromSettings * 1000
       : DEFAULT_TIME_TO_PUSH * 1000
 
-  const block3rdParty = !!Settings.get('settings', '').length
+  const block3rdParty = !!Settings.get('block3rdParty', '').length
+
   const customTimeToPushFromSettings = Settings.get('customTimeToPush', '')
 
   const blacklistFromSettings = Settings.get('blacklist', '')
@@ -125,6 +140,8 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
       document.head.appendChild(linkDNSFetch)
     }
   }
+
+  Settings.logDebug(['Pre Connect', preConnectList])
 
   const whiteList = ['*.vtexassets.com', 'vtex.com', '*.myvtex.com']
 
@@ -211,10 +228,13 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
             }
 
             const intervalID = setInterval(() => {
-              if (SPEEDY.lcpLoaded) {
-                clearInterval(intervalID)
-                fct.call(scope, child, referenceNode)
+              if (!SPEEDY.lcpLoaded) {
+                return
               }
+
+              Settings.logDebug(`3rd party postponed ${child.src}`)
+              clearInterval(intervalID)
+              fct.call(scope, child, referenceNode)
             }, 50)
           }
         }, execTimeToPush)
@@ -270,11 +290,8 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
   observer.observe({ entryTypes: ['paint', 'largest-contentful-paint'] })
 })()
 
-/**
- * Handles the anchors
- */
 ;(function HandleAnchorsPrefetch() {
-  const QUEUE_INTERVAL = 1.5 * 1000
+  const QUEUE_INTERVAL = parseFloat(Settings.get('queueDelay', '1.5')) * 1000
 
   class CallbackQueue {
     constructor() {
@@ -371,11 +388,20 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
     return urlObj.href.slice(baseUrl.length)
   }
 
+  /**
+   * Checks if an anchor element meets the specified rules and performs prefetching.
+   * @param {HTMLAnchorElement} anchor - The anchor element to check.
+   */
   function checkAnchor(anchor) {
+    const anchorRules = decodeURIComponent(
+      Settings.get('prefetchRule', 'product-summary')
+    ).split(',')
+
     if (
       !Array.from(anchor.classList).find(
         className =>
-          className.includes('product-summary') || className.includes('speedy')
+          anchorRules.some(rule => className.includes(rule)) ||
+          className.includes('speedy')
       )
     ) {
       return
@@ -405,9 +431,16 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
 
       document.head.appendChild(preFetchAnchor)
       document.head.appendChild(preFetchAnchorSPA)
+
+      Settings.logDebug(`Prefetching ${anchor.href}`)
     })
   }
 
+  /**
+   * Watches for mutations and performs actions based on the added nodes.
+   *
+   * @param {MutationRecord[]} mutations - An array of MutationRecord objects representing the mutations.
+   */
   function watch(mutations) {
     mutations.forEach(mutation => {
       // Check if there are added nodes in this mutation
