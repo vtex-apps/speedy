@@ -1,4 +1,4 @@
-![plot](./assets/github-banner.png)
+![plot](./assets/github-banner-1.png)
 
 📢 Use🏃 this project, [contribute](https://github.com/vtex-apps/speedy) to it or open issues to help evolve it using [Store Discussion](https://github.com/vtex-apps/store-discussion).
 
