@@ -1,3 +1,5 @@
+script().
+  window.speedy_version = '#{version}'
 each cssFile in htmlWebpackPlugin.files.css
   style !{compilation.assets[cssFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}
 each jsFile in htmlWebpackPlugin.files.js

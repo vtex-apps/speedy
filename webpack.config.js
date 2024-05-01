@@ -1,10 +1,16 @@
 const path = require('path')
+const fs = require('fs')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
+const manifest = JSON.parse(fs.readFileSync('./manifest.json'))
+
 module.exports = {
-  entry: path.resolve(__dirname, 'src/index.js'),
+  entry: [
+    path.resolve(__dirname, 'src/index.js'),
+    path.resolve(__dirname, 'public/~partytown/partytown.js'),
+  ],
   optimization: {
     minimize: true,
     minimizer: [
@@ -44,6 +50,9 @@ module.exports = {
       inject: false,
       filename: 'head-start.html',
       inlineSource: '.(js|css)$',
+      templateParameters: {
+        version: manifest.version,
+      },
       template: path.resolve(__dirname, 'template/template.pug'),
     }),
   ],
