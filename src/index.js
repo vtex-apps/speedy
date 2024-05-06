@@ -1,6 +1,11 @@
 const speedyDebug = !!(
   localStorage?.getItem('speedyDebug') ||
-  window.location.search.includes('speedyDebug')
+  window.location.search.includes('speedyDebug') ||
+  window.location.domain.includes('myvtex')
+)
+
+const isLinked = !!(
+  localStorage?.getItem('linked') || window.location.search.includes('linked')
 )
 
 const isGTMDebugging = window?.location?.search.includes('gtm_debug')
@@ -9,15 +14,17 @@ window.partytown = {
   forward: ['dataLayer.push', 'fbq', 'gtag'],
   debug: speedyDebug,
   loadScriptsOnMainThread: [...(isGTMDebugging ? [/googletagmanager/g] : [])],
-  lib: !speedyDebug
+  lib: !isLinked
     ? `/_v/public/assets/v1/published/vtex.speedy@${window.speedy_version}/public/~partytown/`
     : `/_v/private/assets/v1/linked//vtex.speedy@${window.speedy_version}/public/~partytown/`,
 }
 
 if (speedyDebug) {
   localStorage.setItem('speedyDebug', 'true')
-} else {
-  localStorage.removeItem('speedyDebug')
+}
+
+if (isLinked) {
+  localStorage.setItem('linked', 'true')
 }
 
 const Settings = {
@@ -290,6 +297,43 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
   observer.observe({ entryTypes: ['paint', 'largest-contentful-paint'] })
 })()
 
+// function DebugBar() {
+//   const debugBar = document.createElement('div')
+
+//   debugBar.style.position = 'fixed'
+//   debugBar.style.bottom = '0'
+//   debugBar.style.left = '0'
+//   debugBar.style.width = '100%'
+//   debugBar.style.backgroundColor = '#242424'
+//   debugBar.style.color = 'white'
+//   debugBar.style.padding = '10px'
+//   debugBar.style.zIndex = '9999'
+//   debugBar.style.display = 'flex'
+//   debugBar.style.justifyContent = 'space-between'
+
+//   const debugBarTitle = document.createElement('span')
+
+//   debugBarTitle.innerText = 'Speedy Debug'
+
+//   const debugBarClose = document.createElement('a')
+
+//   debugBarClose.innerText = 'Close'
+//   debugBarClose.style.cursor = 'pointer'
+//   debugBarClose.style.backgroundColor = 'white'
+//   debugBarClose.style.color = 'black'
+//   debugBarClose.style.border = 'none'
+//   debugBarClose.style.padding = '5px 10px'
+//   debugBarClose.style.borderRadius = '5px'
+
+//   debugBarClose.addEventListener('click', () => {
+//     debugBar.style.display = 'none'
+//   })
+
+//   debugBar.appendChild(debugBarTitle)
+//   debugBar.appendChild(debugBarClose)
+
+//   document.body.appendChild(debugBar)
+// }
 ;(function HandleAnchorsPrefetch() {
   const QUEUE_INTERVAL = parseFloat(Settings.get('queueDelay', '1.5')) * 1000
 
@@ -475,5 +519,9 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
     document.body.querySelectorAll('a').forEach(anchor => {
       checkAnchor(anchor)
     })
+
+    if (speedyDebug) {
+      // DebugBar()
+    }
   })
 })()

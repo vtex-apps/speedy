@@ -62,27 +62,17 @@
         "description": "Pattern: domain;domain;domain...",
         "type": "string"
       },
-      "enableGA": {
-        "title": "Enable Google Analytics",
-        "description": "Enable Google Analytics",
-        "type": "boolean"
-      },
-      "googleAnalyticsID": {
-        "title": "Google Analytics ID",
-        "description": "Google Analytics ID",
-        "type": "string"
+      "prefetchAnchors": {
+        "title": "Prefetch Anchors",
+        "description": "Block all 3rd party",
+        "type": "boolean",
+        "default": true
       },
       "queueDelay": {
         "title": "Queue Delay",
         "description": "Delay in seconds to load each item of the queue",
         "type": "string",
         "default": "1.5"
-      },
-      "prefetchAnchors": {
-        "title": "Prefetch Anchors",
-        "description": "Block all 3rd party",
-        "type": "boolean",
-        "default": true
       },
       "prefetchRule": {
         "title": "Prefetch Anchors Rule",
