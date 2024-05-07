@@ -23,7 +23,7 @@ Moreover, **Speedy** leverages LCP (Largest Contentful Paint) and FCP (First Con
 ### 3rd-party handling
 
 
-![plot](./assets/speedy-explanation1.png)
+![plot](./assets/speedy-workers1.png)
 
 ## Web Vitals
 
@@ -40,7 +40,7 @@ Delaying and running scripts on web workers reduces execution on the main thread
 
 **Speedy** enhances the INP by proactively caching pages according to predefined rules
 
-![plot](./assets/speedy-prefetching2.png)
+![plot](./assets/speedy-prefetch.png)
 
 Initially, **Speedy** is set up to prefetch and preload Product Detail Page (PDP) URLs on Product Listing Page (PLP) views. However, this functionality can be extended to any hyperlink by assigning the "**speedy**" class to `<a></a>` tags or by adjusting the settings on the configuration page.
 
