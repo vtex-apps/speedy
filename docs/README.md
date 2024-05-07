@@ -10,7 +10,7 @@
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 
-## Description
+## How it works
 
 The **VTEX Speedy** app optimizes your store's performance by:
 
@@ -20,8 +20,7 @@ The **VTEX Speedy** app optimizes your store's performance by:
 
 Moreover, **Speedy** leverages LCP (Largest Contentful Paint) and FCP (First Contentful Paint) metrics to ensure that third-party scripts do not impact page loading times.
 
-### 3rd-party handling
-
+### Speedy 3rd-party handling
 
 ![plot](./assets/speedy-workers1.png)
 
@@ -55,28 +54,6 @@ Example
 
 *It will recognize whatever string includes "speedy"*
 
-### TTFB, LCP & FCP improvement
-
-**Speedy** does not impact directly on these metrics, however, there are steps to improve it the we strongly recommend:
-
-Overwrite cache control settings on these apps:
-
-**vtex.render-server**:  >= 8.171.0
-
-![plot](./assets/vtex-render-server.jpg)
-
-**vtex-rewriter**: >= 1.62.0
-
-![plot](./assets/vtex-rewriter.jpg)
-
-Max-Age: 300 (5 minutes)
-
-Stale Revalidate overwrite: 8600 (24 hours)
-
-By making these changes, it will improve the cache CDN, keeping a version of the content for 24 hours while the CDN gets a new content on the source(VTEX).
-
-**Make sure the 8600 attend the store, otherwise, lower values can be applicable**
-
 ## Integrations
 
 ### Partytown
@@ -87,6 +64,43 @@ By making these changes, it will improve the cache CDN, keeping a version of the
 
 These enhancements boost **Speedy's** flexibility by allowing modifications such as configuring pixel apps to "text/partytown" for processing in web workers. This setup enables the orderly organization and rearrangement of pixel apps as needed. 
 
+## Settings
+
+### TTFB, LCP & FCP improvement
+
+While **Speedy** does not directly impact these metrics, we strongly recommend taking certain steps to enhance its performance:
+
+You should change the overwrite cache settings: 
+
+1. Make sure the app are installed correctly: 
+* ```vtex-rewriter: >= 1.62.0``` 
+* ```vtex.render-server:  >= 8.171.0```
+
+```ssh
+# List the apps or deps
+
+vtex deps ls | grep render-server
+vtex deps ls | grep rewriter
+
+# Installing
+
+vtex install vtex-rewriter@1.62.0
+vtex install vtex.render-server@8.171.0
+
+```
+2. Enable the flag overwrite cache control settings on these apps and set the values like the image below:
+
+**vtex.render-server**
+![plot](./assets/vtex-render-server.jpg)
+**vtex-rewriter**
+![plot](./assets/vtex-rewriter.jpg)
+
+* **Max-Age**: 300 (5 minutes)
+* **Stale Revalidate overwrite**: 86400 (24 hours)
+
+By implementing these modifications, we will enhance the cache CDN by maintaining a version of the content for 24 hours. During this period, the `Max-Age` header will specify that the content can be served from the cache without revalidation for up to 24 hours. Concurrently, the `Stale-While-Revalidate` header will allow the CDN to serve stale content while it asynchronously fetches new content from the source (VTEX). This approach ensures that users receive content quickly while the most recent updates are being retrieved and stored.
+
+❗**Make sure the 86400 seconds works, otherwise, lower values can be applicable**
 
 ## Installing Speedy
 
@@ -95,24 +109,34 @@ These enhancements boost **Speedy's** flexibility by allowing modifications such
 3. You'll see a warning message about needing to enter the necessary configurations. Scroll down and fill the additional information in the settings area
 4. Click on **Save**.
 
+
+**VTEX CLI**
+
+```vtex install vtex.speedy@0.x```
+
 ## Setting up
 
 You must need to set up speed to ensure that everything is running smoothly
 After installing **Speedy**, follow this steps:
 
-#### Partytown scripts (TBT)
+### 1) Partytown scripts (TBT)
 
 1. Identify the 3rd-party scripts that are running into your site, we strongly recommend to use [Webpage Test](https://www.webpagetest.org/);
 2. Once you get it, open the Pixel Render UI by accessing this URL: **/admin/pixel-server-ui/**
-3. Select carefully the Pixel Apps you want to run through *Speedy/Partytown*
+3. ❗❗❗Select **CAREFULLY** the Pixel Apps you want to run through *Speedy/Partytown*❗❗❗
+4. Move the speedy to the top and DON'T check it as partytown
 
 ![plot](./assets/pixel-server.jpg)
 
-4. Click on Save Button and test if everything is ok
+4. Click on Save Button and test it
 
-## Speedy Setup
+### 2) Speedy App Setup
 
 Currently **Speedy** doesn't have a friendly UI to setup the config, the only way is to access the Settings on App Management:
+
+```Access Admin > My Apps (App Management) > Type Speedy on the search```
+
+**You need the Admin Access to save these settings**
 
 ![plot](./assets/speedy-config2.jpg)
 
