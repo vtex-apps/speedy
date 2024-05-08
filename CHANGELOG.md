@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-05-07
+
+### Added
+
+- New boosted Speedy version to improve INP, TBT
+- Partytown integration
+
 ## [0.3.1] - 2024-02-28
 
 ## [0.3.0] - 2024-02-26

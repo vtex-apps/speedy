@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint --ignore-pattern pixel --ext js,jsx,ts,tsx .",
     "build": "webpack",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json}\"",
+    "dev": "nodemon"
   },
   "husky": {
     "hooks": {
@@ -34,6 +35,7 @@
     "husky": "^4.2.0",
     "inline-chunk-html-plugin": "^1.1.1",
     "lint-staged": "^10.0.2",
+    "nodemon": "^3.1.0",
     "prettier": "^1.19.1",
     "pug": "^3.0.2",
     "pug-loader": "^2.4.0",
@@ -41,5 +43,9 @@
     "typescript": "^3.7.5",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@builder.io/partytown": "^0.10.1",
+    "copy-webpack-plugin": "^12.0.2"
   }
 }
