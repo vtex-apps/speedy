@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Added prereleasy script
 
+## [0.5.0] - 2024-05-08
+
 ## [0.4.0] - 2024-05-07
 
 ### Added
