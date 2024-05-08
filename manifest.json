@@ -5,6 +5,7 @@
   "title": "Speedy",
   "description": "Speedy is a VTEX IO app that improves the performance of your store by optimizing the loading of third-party scripts, prefetching data. It will allow you to improve the TBT and INP metrics",
   "scripts": {
+    "prereleasy": "node run build",
     "postreleasy": "vtex publish --verbose"
   },
   "billingOptions": {
