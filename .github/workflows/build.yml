@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Custom Building
 
 on:
   pull_request:
