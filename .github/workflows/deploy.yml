@@ -20,7 +20,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16' # Specify the Node.js version you need
+        node-version: '20'
 
     - name: Install Dependencies
       run: npm install
@@ -32,6 +32,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add -f build/ # Assuming 'build/' is the output directory
+        git add .
         git commit -m "Add built artifacts"
         git push origin ${{ github.head_ref }}
