@@ -1,7 +1,7 @@
 const speedyDebug = !!(
   localStorage?.getItem('speedyDebug') ||
   window.location.search.includes('speedyDebug') ||
-  window.location.domain.includes('myvtex')
+  window.location.host.includes('myvtex')
 )
 
 const isLinked = !!(

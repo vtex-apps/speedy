@@ -1,4 +1,4 @@
-/* Partytown 0.10.1-dev1714508560424 - MIT builder.io */
+/* Partytown 0.10.1-dev1715631211675 - MIT builder.io */
 (self => {
     const WinIdKey = Symbol();
     const InstanceIdKey = Symbol();
@@ -753,7 +753,7 @@
         }
         return {};
     };
-    const getPartytownScript = () => `<script src="${partytownLibUrl("partytown.js?v=0.10.1-dev1714508560424")}"><\/script>`;
+    const getPartytownScript = () => `<script src="${partytownLibUrl("partytown.js?v=0.10.1-dev1715631211675")}"><\/script>`;
     const createImageConstructor = env => class HTMLImageElement {
         constructor() {
             this.s = "";
@@ -1405,7 +1405,7 @@
                         (() => {
                             if (!webWorkerCtx.$initWindowMedia$) {
                                 self.$bridgeToMedia$ = [ getter, setter, callMethod, constructGlobal, definePrototypePropertyDescriptor, randomId, WinIdKey, InstanceIdKey, ApplyPathKey ];
-                                webWorkerCtx.$importScripts$(partytownLibUrl("partytown-media.js?v=0.10.1-dev1714508560424"));
+                                webWorkerCtx.$importScripts$(partytownLibUrl("partytown-media.js?v=0.10.1-dev1715631211675"));
                                 webWorkerCtx.$initWindowMedia$ = self.$bridgeFromMedia$;
                                 delete self.$bridgeFromMedia$;
                             }
@@ -1454,7 +1454,7 @@
                     };
                 })(win, nodeCstrs);
                 webWorkerCtx.$interfaces$.map((([cstrName, superCstrName, members, interfaceType, nodeName]) => {
-                    let SuperCstr = TrapConstructors[cstrName] ? WorkerTrapProxy : "EventTarget" === superCstrName ? WorkerEventTargetProxy : "Object" === superCstrName ? WorkerBase : win[superCstrName];
+                    const SuperCstr = TrapConstructors[cstrName] ? WorkerTrapProxy : "EventTarget" === superCstrName ? WorkerEventTargetProxy : "Object" === superCstrName ? WorkerBase : win[superCstrName];
                     const Cstr = win[cstrName] = defineConstructorName(12 === interfaceType ? class extends WorkerBase {
                         constructor(...args) {
                             super();
@@ -1838,12 +1838,13 @@
                 })(msgValue);
             } else if (10 === msgType) {
                 (({$winId$: $winId$, $forward$: $forward$, $args$: $args$}) => {
+                    var _a;
                     try {
                         let target = environments[$winId$].$window$;
                         let i = 0;
                         let l = len($forward$);
                         for (;i < l; i++) {
-                            i + 1 < l ? target = target[$forward$[i]] : target[$forward$[i]].apply(target, deserializeFromMain(null, $winId$, [], $args$));
+                            i + 1 < l ? target = target[$forward$[i]] : null === (_a = target[$forward$[i]]) || void 0 === _a || _a.apply(target, deserializeFromMain(null, $winId$, [], $args$));
                         }
                     } catch (e) {
                         console.error(e);

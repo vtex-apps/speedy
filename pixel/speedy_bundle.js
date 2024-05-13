@@ -42,7 +42,7 @@ var n=Object.prototype.toString.call(e).slice(8,-1)
 return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?f(e,t):void 0
 }}function f(e,t){(null==t||t>e.length)&&(t=e.length)
 for(var n=0,r=Array(t);n<t;n++){r[n]=e[n]}return r}
-var d,p=!!(null!==(t=localStorage)&&void 0!==t&&t.getItem("speedyDebug")||window.location.search.includes("speedyDebug")||window.location.domain.includes("myvtex")),y=!!(null!==(n=localStorage)&&void 0!==n&&n.getItem("linked")||window.location.search.includes("linked")),b=null===(r=window)||void 0===r||null===(r=r.location)||void 0===r?void 0:r.search.includes("gtm_debug")
+var d,p=!!(null!==(t=localStorage)&&void 0!==t&&t.getItem("speedyDebug")||window.location.search.includes("speedyDebug")||window.location.host.includes("myvtex")),y=!!(null!==(n=localStorage)&&void 0!==n&&n.getItem("linked")||window.location.search.includes("linked")),b=null===(r=window)||void 0===r||null===(r=r.location)||void 0===r?void 0:r.search.includes("gtm_debug")
 window.partytown={"forward":["dataLayer.push","fbq","gtag"],"debug":p,
 "loadScriptsOnMainThread":(d=b?[/googletagmanager/g]:[],function(e){if(Array.isArray(e)){return f(e)
 }}(d)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"]){
@@ -180,7 +180,7 @@ e.active?h():e.installing&&e.installing.addEventListener("statechange",(function
 d=t.createElement(n?"script":"iframe"),e._pttab=Date.now(),n||(d.style.display="block",
 d.style.width="0",d.style.height="0",d.style.border="0",d.style.visibility="hidden",
 d.setAttribute("aria-hidden",!0)),
-d.src=u+"partytown-"+(n?"atomics.js?v=0.10.1-dev1714508560424":"sandbox-sw.html?"+e._pttab),
+d.src=u+"partytown-"+(n?"atomics.js?v=0.10.1-dev1715631211675":"sandbox-sw.html?"+e._pttab),
 t.querySelector(a.sandboxParent||"body").appendChild(d)}function m(n,i){for(g(),
 r==e&&(a.forward||[]).map((function(t){var n=o(c(t),1)[0]
 delete e[n.split(".")[0]]})),n=0;n<f.length;n++){
