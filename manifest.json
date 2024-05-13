@@ -18,7 +18,10 @@
   },
   "builders": {
     "pixel": "0.x",
-    "docs": "0.x"
+    "docs": "0.x",
+    "react": "3.x",
+    "admin": "0.x",
+    "messages": "1.x"
   },
   "dependencies": {
     "vtex.pixel-interfaces": "1.x",

@@ -1,0 +1,6 @@
+{
+  "admin.app.pixel-server-ui": {
+    "component": "AdminSpeedy",
+    "path": "/admin/app/speedy"
+  }
+}

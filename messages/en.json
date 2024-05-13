@@ -1,0 +1,9 @@
+{
+  "admin/speedy.navigation.title": "Speedy",
+  "admin/speedy.title": "Speedy",
+  "admin/speedy.itemId": "Item #{refId}",
+  "admin/speedy.item.actions.ariaLabel": "Table row actions",
+  "admin/speedy.item.action": "Perform action",
+  "admin/speedy.item.dangerousAction": "Perform dangerous action",
+  "admin/speedy.saveButton": "Save"
+}
