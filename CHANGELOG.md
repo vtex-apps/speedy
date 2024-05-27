@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Bug fixes on partytown integration
+- Documentation updated
+
 ## [0.5.9] - 2024-05-13
 
 ### Fixed

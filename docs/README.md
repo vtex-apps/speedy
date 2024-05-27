@@ -60,6 +60,8 @@ Example
 
 [Partytown](https://github.com/BuilderIO/partytown) library is built into **Speedy** and that has been optimized to function flawlessly and to fully utilize its capability to execute scripts in service workers without any issues.
 
+**To enable the integration you should check the flag in the App Management.**
+
 ### Pixel Server & Pixel Server UI
 
 These enhancements boost **Speedy's** flexibility by allowing modifications such as configuring pixel apps to "text/partytown" for processing in web workers. This setup enables the orderly organization and rearrangement of pixel apps as needed. 
@@ -95,12 +97,19 @@ vtex install vtex.render-server@8.171.0
 **vtex-rewriter**
 ![plot](./assets/vtex-rewriter.jpg)
 
-* **Max-Age**: 300 (5 minutes)
-* **Stale Revalidate overwrite**: 86400 (24 hours)
+**Example:**
+* **Max-Age**: 300 (5 minutes) - VTEX default - we don't recommend modifying it;
+* **Stale Revalidate overwrite**: 86400 (24 hours) - this metric is pretty subjective once you MUST calibrate it according to your needs;
 
 By implementing these modifications, we will enhance the cache CDN by maintaining a version of the content for 24 hours. During this period, the `Max-Age` header will specify that the content can be served from the cache without revalidation for up to 24 hours. Concurrently, the `Stale-While-Revalidate` header will allow the CDN to serve stale content while it asynchronously fetches new content from the source (VTEX). This approach ensures that users receive content quickly while the most recent updates are being retrieved and stored.
 
 ❗**Make sure the 86400 seconds works, otherwise, lower values can be applicable**
+
+### Potential Side Effects
+
+❗ Using a long stale-cache if revalidate can bring some side effects like:
+  - Delaying on price update (PLP and PDP)
+  - Google Shopping mismatch prices
 
 ## Installing Speedy
 
@@ -138,7 +147,7 @@ Currently **Speedy** doesn't have a friendly UI to setup the config, the only wa
 
 **You need the Admin Access to save these settings**
 
-![plot](./assets/speedy-config2.jpg)
+![plot](./assets/speedy-config3.jpg)
 
 ### Time in seconds to push the 3rd-party
 By the default, **Speedy** **delays 5s** when it identifies a 3rd script that could affect loading, here you can modify this option;
@@ -161,6 +170,13 @@ List of 3rd-party domains to preconnect, by adding the domains here, **Speedy** 
 ```
 googletagmanager;onetrust.com;3rdparty2.com;
 ```
+### Enable Partytown Integration
+Enables the partytown integration by providing the partytown global config
+
+### Partytown Forward
+The list of forward events that partytown handles, see [the documentation](https://partytown.builder.io/forwarding-events) for more details.
+
+**Use comma to separate the values:** value1,value2...
 
 ### [BLACKLIST] List of domains to block
 Speedy provides a feature to block the domains for testing purpose.
@@ -181,6 +197,10 @@ This configuration impacts on the **Prefetching Feature**. The queue delay is th
 ### Prefetch Rule
 
 That's the rule that will check if the anchors should be cached, by default it's product-summary for the PLPs.
+
+## Debugging
+
+Passing `{{domain}}?speedDebug=true` or accessing the site through `{{account}}.myvtex.com` the **Speedy** Debug will be enabled and you can check the logs in the `Console`.
 
 ## Contributors ✨
 

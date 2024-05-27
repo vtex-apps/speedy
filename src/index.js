@@ -9,14 +9,20 @@ const isLinked = !!(
 )
 
 const isGTMDebugging = window?.location?.search.includes('gtm_debug')
+const enablePartytown = '{{settings.enablePartytown}}' === 'true'
 
-window.partytown = {
-  forward: ['dataLayer.push', 'fbq', 'gtag'],
-  debug: speedyDebug,
-  loadScriptsOnMainThread: [...(isGTMDebugging ? [/googletagmanager/g] : [])],
-  lib: !isLinked
-    ? `/_v/public/assets/v1/published/vtex.speedy@${window.speedy_version}/public/~partytown/`
-    : `/_v/private/assets/v1/linked//vtex.speedy@${window.speedy_version}/public/~partytown/`,
+if (enablePartytown) {
+  const partytownForward = '{{settings.partytownForward}}'
+  const partytownForwardArray = decodeURIComponent(partytownForward).split(',')
+
+  window.partytown = {
+    forward: partytownForwardArray,
+    debug: speedyDebug,
+    loadScriptsOnMainThread: [...(isGTMDebugging ? [/googletagmanager/g] : [])],
+    lib: !isLinked
+      ? `/_v/public/assets/v1/published/vtex.speedy@${window.speedy_version}/public/~partytown/`
+      : `/_v/private/assets/v1/linked//vtex.speedy@${window.speedy_version}/public/~partytown/`,
+  }
 }
 
 if (speedyDebug) {
@@ -228,6 +234,10 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
         const isBlackListed =
           blacklist().find(item => child.src.includes(item)) && isAnalytics
 
+        Settings.logDebug(
+          `[3rd party] delaying ${child.src} for ${execTimeToPush / 1000}s`
+        )
+
         return setTimeout(() => {
           if (!block3rdParty && !isBlackListed) {
             if (SPEEDY.lcpLoaded) {
@@ -239,8 +249,8 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
                 return
               }
 
-              Settings.logDebug(`3rd party postponed ${child.src}`)
               clearInterval(intervalID)
+              Settings.logDebug(`[3rd party] ${child.src} executed`)
               fct.call(scope, child, referenceNode)
             }, 50)
           }
