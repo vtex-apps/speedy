@@ -1,4 +1,4 @@
-<script>window.speedy_version = '0.5.9'</script><script>(()=>{function e(t){
+<script>window.speedy_version = '0.6.0'</script><script>(()=>{function e(t){
 return e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e
 }:function(e){
 return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e
@@ -43,14 +43,16 @@ return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?A
 }}function f(e,t){(null==t||t>e.length)&&(t=e.length)
 for(var n=0,r=Array(t);n<t;n++){r[n]=e[n]}return r}
 var d,p=!!(null!==(t=localStorage)&&void 0!==t&&t.getItem("speedyDebug")||window.location.search.includes("speedyDebug")||window.location.host.includes("myvtex")),y=!!(null!==(n=localStorage)&&void 0!==n&&n.getItem("linked")||window.location.search.includes("linked")),b=null===(r=window)||void 0===r||null===(r=r.location)||void 0===r?void 0:r.search.includes("gtm_debug")
-window.partytown={"forward":["dataLayer.push","fbq","gtag"],"debug":p,
-"loadScriptsOnMainThread":(d=b?[/googletagmanager/g]:[],function(e){if(Array.isArray(e)){return f(e)
-}}(d)||function(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"]){
-return Array.from(e)}}(d)||s(d)||function(){
+if("{{settings.enablePartytown}}"=="true"){
+var g=decodeURIComponent("{{settings.partytownForward}}").split(",")
+window.partytown={"forward":g,"debug":p,"loadScriptsOnMainThread":(d=b?[/googletagmanager/g]:[],
+function(e){if(Array.isArray(e)){return f(e)}}(d)||function(e){
+if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"]){return Array.from(e)
+}}(d)||s(d)||function(){
 throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")
 }()),
 "lib":y?"/_v/private/assets/v1/linked//vtex.speedy@".concat(window.speedy_version,"/public/~partytown/"):"/_v/public/assets/v1/published/vtex.speedy@".concat(window.speedy_version,"/public/~partytown/")
-},p&&localStorage.setItem("speedyDebug","true"),y&&localStorage.setItem("linked","true")
+}}p&&localStorage.setItem("speedyDebug","true"),y&&localStorage.setItem("linked","true")
 var h={"timeFromSettings":"{{settings.timeToPush3rdParty}}",
 "block3rdParty":"{{settings.block3rdParty}}","customTimeToPush":"{{settings.customTimeToPush}}",
 "blacklist":"{{settings.blacklist}}","preconnect":"{{settings.preconnect}}","account":"{{account}}",
@@ -88,12 +90,14 @@ return!1}}(e.src))){var a,c,f=s.length>0&&null!==(a=null===(c=s.find((function(t
 return e.src.includes(t.domain)
 })))||void 0===c?void 0:c.seconds)&&void 0!==a?a:n,d="true"===h.get("enableGA","false")&&m.length&&e.src.includes(m),p=l().find((function(t){
 return e.src.includes(t)}))&&d
-return setTimeout((function(){if(!r&&!p){if(SPEEDY.lcpLoaded){return t.call(o,e,i)}
-var n=setInterval((function(){SPEEDY.lcpLoaded&&(h.logDebug("3rd party postponed ".concat(e.src)),
-clearInterval(n),t.call(o,e,i))}),50)}}),f)}return t.call(o,e,i)}window.SPEEDY={
-"DEFAULT_TIME_TO_PUSH":e,"timeToPush":n,"whiteList":g,"timeFromSettings":t,"block3rdParty":r,
-"customTimeToPush":s,"blacklist":l(),"preConnectData":a,"preConnectList":c,"lcpLoaded":!1,
-"fcpLoaded":!1,"googleAnalyticsID":m}
+return h.logDebug("[3rd party] delaying ".concat(e.src," for ").concat(f/1e3,"s")),
+setTimeout((function(){if(!r&&!p){if(SPEEDY.lcpLoaded){return t.call(o,e,i)}
+var n=setInterval((function(){
+SPEEDY.lcpLoaded&&(clearInterval(n),h.logDebug("[3rd party] ".concat(e.src," executed")),
+t.call(o,e,i))}),50)}}),f)}return t.call(o,e,i)}window.SPEEDY={"DEFAULT_TIME_TO_PUSH":e,
+"timeToPush":n,"whiteList":g,"timeFromSettings":t,"block3rdParty":r,"customTimeToPush":s,
+"blacklist":l(),"preConnectData":a,"preConnectList":c,"lcpLoaded":!1,"fcpLoaded":!1,
+"googleAnalyticsID":m}
 var w=Element.prototype.appendChild,O=Element.prototype.insertBefore
 Element.prototype.appendChild=function(e){return v(e,w,this)
 },Element.prototype.insertBefore=function(e,t){return v(e,O,this,t)}}(),function(){
@@ -171,21 +175,21 @@ return Array.from(t)}())
 var p=arguments.length>10&&void 0!==arguments[10]?arguments[10]:e,y=arguments.length>11?arguments[11]:void 0
 function b(){
 y||(y=1,"/"==(u=(a.lib||"/~partytown/")+(a.debug?"debug/":""))[0]&&(f=t.querySelectorAll('script[type="text/partytown"]'),
-r!=e?r.dispatchEvent(new CustomEvent("pt1",{"detail":e})):(s=setTimeout(m,999999999),
-t.addEventListener("pt0",g),
-i?h(1):n.serviceWorker?n.serviceWorker.register(u+(a.swPath||"partytown-sw.js"),{"scope":u
+r!=e?r.dispatchEvent(new CustomEvent("pt1",{"detail":e})):(s=setTimeout(h,999999999),
+t.addEventListener("pt0",m),
+i?g(1):n.serviceWorker?n.serviceWorker.register(u+(a.swPath||"partytown-sw.js"),{"scope":u
 }).then((function(e){
-e.active?h():e.installing&&e.installing.addEventListener("statechange",(function(e){
-"activated"==e.target.state&&h()}))}),console.error):m())))}function h(n){
+e.active?g():e.installing&&e.installing.addEventListener("statechange",(function(e){
+"activated"==e.target.state&&g()}))}),console.error):h())))}function g(n){
 d=t.createElement(n?"script":"iframe"),e._pttab=Date.now(),n||(d.style.display="block",
 d.style.width="0",d.style.height="0",d.style.border="0",d.style.visibility="hidden",
 d.setAttribute("aria-hidden",!0)),
 d.src=u+"partytown-"+(n?"atomics.js?v=0.10.1-dev1715631211675":"sandbox-sw.html?"+e._pttab),
-t.querySelector(a.sandboxParent||"body").appendChild(d)}function m(n,i){for(g(),
+t.querySelector(a.sandboxParent||"body").appendChild(d)}function h(n,i){for(m(),
 r==e&&(a.forward||[]).map((function(t){var n=o(c(t),1)[0]
 delete e[n.split(".")[0]]})),n=0;n<f.length;n++){
 (i=t.createElement("script")).innerHTML=f[n].innerHTML,i.nonce=a.nonce,t.head.appendChild(i)}
-d&&d.parentNode.removeChild(d)}function g(){clearTimeout(s)}
+d&&d.parentNode.removeChild(d)}function m(){clearTimeout(s)}
 a=e.partytown||{},r==e&&(a.forward||[]).map((function(t){
 var n=o(c(t),2),r=n[0],i=n[1].preserveBehavior
 p=e,r.split(".").map((function(t,n,r){var o

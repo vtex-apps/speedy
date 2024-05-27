@@ -1,7 +1,7 @@
 {
   "name": "speedy",
   "vendor": "vtex",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "title": "Speedy",
   "description": "Speedy is a VTEX IO app that improves the performance of your store by optimizing the loading of third-party scripts, prefetching data. It will allow you to improve the TBT and INP metrics",
   "scripts": {
@@ -62,9 +62,21 @@
         "description": "Pattern: domain;domain;domain...",
         "type": "string"
       },
+      "enablePartytown": {
+        "title": "Enable Partytown integration ",
+        "description": "Use with caution and enable the scripts on the on Pixel UI",
+        "type": "boolean",
+        "default": false
+      },
+      "partytownForward": {
+        "title": "Partytown Forward",
+        "description": "Visit the Partytown documentation to get more details, separated by comma",
+        "type": "string",
+        "default": "dataLayer.push,fbq,gtag"
+      },
       "prefetchAnchors": {
         "title": "Prefetch Anchors",
-        "description": "Block all 3rd party",
+        "description": "Prefetch anchors on the page",
         "type": "boolean",
         "default": true
       },
