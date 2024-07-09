@@ -44,6 +44,8 @@ const Settings = {
   googleAnalyticsID: '{{settings.googleAnalyticsID}}',
   queueDelay: '{{settings.queueDelay}}',
   prefetchAnchors: '{{settings.prefetchAnchors}}',
+  prefetchAnchorsDesktop: '{{settings.prefetchAnchorsDesktop}}',
+  prefetchAnchorsMobile: '{{settings.prefetchAnchorsMobile}}',
   prefetchRule: '{{settings.prefetchRule}}',
   get: (property, _default) => {
     return Settings[property] ? Settings[property] : _default
@@ -344,6 +346,38 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
 
 //   document.body.appendChild(debugBar)
 // }
+;(function PushState() {
+  const { history } = window
+  // Store the original methods
+  const originalPushState = history.pushState
+  const originalReplaceState = history.replaceState
+
+  // Override pushState
+  history.pushState = function(state, title, url) {
+    originalPushState.apply(this, arguments)
+    triggerRouteChangeEvent(state, title, url)
+  }
+
+  // Override replaceState
+  history.replaceState = function(state, title, url) {
+    originalReplaceState.apply(this, arguments)
+    triggerRouteChangeEvent(state, title, url)
+  }
+
+  // Function to handle custom event triggering
+  function triggerRouteChangeEvent(state, title, url) {
+    const event = new CustomEvent('routeChange', {
+      detail: {
+        state,
+        title,
+        url,
+      },
+    })
+
+    window.dispatchEvent(event)
+  }
+})()
+
 ;(function HandleAnchorsPrefetch() {
   const QUEUE_INTERVAL = parseFloat(Settings.get('queueDelay', '1.5')) * 1000
 
@@ -363,6 +397,10 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
         this.running = true
         this.process()
       }
+    }
+
+    clear() {
+      this.queue = []
     }
 
     process() {
@@ -400,6 +438,11 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
     'runtimeMeta',
     'settings',
   ].join(',')
+
+  // Optional: Add a custom event listener for 'routeChange'
+  window.addEventListener('routeChange', function() {
+    queue.clear()
+  })
 
   function detectDevice() {
     const userAgent = navigator.userAgent.toLowerCase()
@@ -450,6 +493,16 @@ const googleAnalyticsID = Settings.get('googleAnalyticsID', '')
     const anchorRules = decodeURIComponent(
       Settings.get('prefetchRule', 'product-summary')
     ).split(',')
+
+    if (
+      !Settings.get('prefetchAnchors', 'false') ||
+      (detectDevice() === 'desktop' &&
+        Settings.get('prefetchAnchorsDesktop', 'false') === 'false') ||
+      (detectDevice() === 'phone' &&
+        Settings.get('prefetchAnchorsMobile', 'false') === 'false')
+    ) {
+      return
+    }
 
     if (
       !Array.from(anchor.classList).find(

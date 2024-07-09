@@ -80,6 +80,18 @@
         "type": "boolean",
         "default": true
       },
+      "prefetchAnchorsDesktop": {
+        "title": "Prefetch Anchors Desktop",
+        "description": "Prefetch anchors on the page for desktop",
+        "type": "boolean",
+        "default": false
+      },
+      "prefetchAnchorsMobile": {
+        "title": "Prefetch Anchors Mobile",
+        "description": "Prefetch anchors on the page for mobile",
+        "type": "boolean",
+        "default": true
+      },
       "queueDelay": {
         "title": "Queue Delay",
         "description": "Delay in seconds to load each item of the queue",
